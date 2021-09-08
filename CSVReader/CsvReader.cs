@@ -14,30 +14,29 @@ namespace CSVReader
 {
     public partial class CsvReader : Form
     {
+        string dgvFileName;
+        string cmbFileName;
+        DataTable dgvDT;
         public CsvReader()
         {
             InitializeComponent();
+            InitializeComboBox();
         }
 
-        private void InitializeData()
+        private void InitializeComboBox()
         {
-            dgvDataCsv.Rows.Clear();
-            using (FileStream file = new FileStream(openFileDialog1.FileName, FileMode.Open, FileAccess.Read, FileShare.Read, 4096))
-            using (StreamReader reader = new StreamReader(file))
-            {
-                int counter = 0;
-                while (!reader.EndOfStream)
+            if (openFileDialog2.ShowDialog() == DialogResult.OK) {
+                cmbFileName = openFileDialog2.FileName;
+                try
                 {
-                    var fields = reader.ReadLine().Split(',');
-                    if (counter == 0) {
-                        dgvDataCsv.Columns.AddRange();
+                    ReadCSV csv = new ReadCSV(cmbFileName);
+                    cmbCsv.DataSource = csv.readCSV;
+                    cmbCsv.DisplayMember = "Name";
+                }
+                catch (Exception ex)
+                {
 
-                    }
-
-                    if (fields.Length == 5 && (fields[0] != "" || fields[1] != ""))
-                    {
-                        dgvDataCsv.Rows.Add(fields);
-                    }
+                    throw new Exception(ex.Message);
                 }
             }
         }
@@ -46,12 +45,14 @@ namespace CSVReader
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                dgvFileName = openFileDialog1.FileName;
                 try
                 {
-                    ReadCSV csv = new ReadCSV(openFileDialog1.FileName);
+                    ReadCSV csv = new ReadCSV(dgvFileName);
                     try
                     {
-                        dgvDataCsv.DataSource = csv.readCSV;
+                        dgvDT = csv.readCSV;
+                        dgvDataCsv.DataSource = dgvDT;
                     }
                     catch (Exception ex) {
                         throw new Exception(ex.Message);
@@ -63,6 +64,52 @@ namespace CSVReader
                     $"Details:\n\n{ex.StackTrace}");
                 }
             }
+        }
+
+        private void btnSaveCSV_Click(object sender, EventArgs e)
+        {
+            StreamWriter sw = new StreamWriter(dgvFileName, false);
+            //headers    
+            for (int i = 0; i < dgvDT.Columns.Count; i++)
+            {
+                sw.Write(dgvDT.Columns[i]);
+                if (i < dgvDT.Columns.Count - 1)
+                {
+                    sw.Write(",");
+                }
+            }
+            sw.Write(sw.NewLine);
+            foreach (DataRow dr in dgvDT.Rows)
+            {
+                for (int i = 0; i < dgvDataCsv.Columns.Count; i++)
+                {
+                    if (!Convert.IsDBNull(dr[i]))
+                    {
+                        string value = dr[i].ToString();
+                        if (value.Contains(','))
+                        {
+                            value = String.Format("\"{0}\"", value);
+                            sw.Write(value);
+                        }
+                        else
+                        {
+                            sw.Write(dr[i].ToString());
+                        }
+                    }
+                    if (i < dgvDataCsv.Columns.Count - 1)
+                    {
+                        sw.Write(",");
+                    }
+                }
+                sw.Write(sw.NewLine);
+            }
+            sw.Close();
+        }
+
+        private void btnShowId_Click(object sender, EventArgs e)
+        {
+            DataRowView selectedItem = (DataRowView) cmbCsv.SelectedItem;
+            MessageBox.Show(selectedItem.Row.ItemArray[0].ToString());
         }
     }
 }
