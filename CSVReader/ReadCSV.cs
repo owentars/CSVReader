@@ -12,43 +12,41 @@ namespace CSVReader
     {
         public DataTable readCSV;
 
-        public ReadCSV(string fileName, bool firstRowContainsFieldNames = true)
+        public ReadCSV(string fileName)
         {
-            readCSV = GenerateDataTable(fileName, firstRowContainsFieldNames);
+            readCSV = GenerateDataTable(fileName);
         }
 
-        private static DataTable GenerateDataTable(string fileName, bool firstRowContainsFieldNames = true)
+        private static DataTable GenerateDataTable(string fileName)
         {
             DataTable result = new DataTable();
 
             using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 4096))
             using (StreamReader reader = new StreamReader(file))
             {
-                int counter = 0;
-                // Get The Column Names
+                bool firstRecord = true;
                 while (!reader.EndOfStream)
                 {
                     var fields = reader.ReadLine().Split(',');
-                    if (counter == 0)
+
+                    if (firstRecord)
                     {
-                        if (firstRowContainsFieldNames)
+                        for (int i = 0; i < fields.Count(); i++)
                         {
-                            for (int i = 0; i < fields.Count(); i++)
-                            {
-                                result.Columns.Add(fields[i]);
-                            }
-                            counter++;
+                            result.Columns.Add(fields[i]);
                         }
+                        firstRecord = false;
                     }
-                    else {
+                    else
+                    {
                         if (fields[0] != "")
                         {
                             result.Rows.Add(fields);
                         }
-                        else {
+                        else
+                        {
                             break;
                         }
-
                     }
                 }
 

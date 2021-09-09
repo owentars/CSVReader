@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CsvReader));
             this.dgvDataCsv = new System.Windows.Forms.DataGridView();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btnSelectFile = new System.Windows.Forms.Button();
@@ -41,84 +42,69 @@
             // 
             // dgvDataCsv
             // 
-            this.dgvDataCsv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.dgvDataCsv, "dgvDataCsv");
+            this.dgvDataCsv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvDataCsv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDataCsv.Location = new System.Drawing.Point(12, 70);
             this.dgvDataCsv.Name = "dgvDataCsv";
-            this.dgvDataCsv.Size = new System.Drawing.Size(692, 336);
-            this.dgvDataCsv.TabIndex = 0;
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            resources.ApplyResources(this.openFileDialog1, "openFileDialog1");
             // 
             // btnSelectFile
             // 
-            this.btnSelectFile.Location = new System.Drawing.Point(12, 12);
+            resources.ApplyResources(this.btnSelectFile, "btnSelectFile");
             this.btnSelectFile.Name = "btnSelectFile";
-            this.btnSelectFile.Size = new System.Drawing.Size(104, 23);
-            this.btnSelectFile.TabIndex = 1;
-            this.btnSelectFile.Text = "Select Data File";
             this.btnSelectFile.UseVisualStyleBackColor = true;
             this.btnSelectFile.Click += new System.EventHandler(this.btnSelectFile_Click);
             // 
             // btnSaveCSV
             // 
-            this.btnSaveCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSaveCSV.Location = new System.Drawing.Point(12, 412);
+            resources.ApplyResources(this.btnSaveCSV, "btnSaveCSV");
             this.btnSaveCSV.Name = "btnSaveCSV";
-            this.btnSaveCSV.Size = new System.Drawing.Size(75, 23);
-            this.btnSaveCSV.TabIndex = 2;
-            this.btnSaveCSV.Text = "Save CSV";
             this.btnSaveCSV.UseVisualStyleBackColor = true;
             this.btnSaveCSV.Click += new System.EventHandler(this.btnSaveCSV_Click);
             // 
             // cmbCsv
             // 
+            resources.ApplyResources(this.cmbCsv, "cmbCsv");
+            this.cmbCsv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCsv.FormattingEnabled = true;
-            this.cmbCsv.Location = new System.Drawing.Point(267, 12);
             this.cmbCsv.Name = "cmbCsv";
-            this.cmbCsv.Size = new System.Drawing.Size(121, 21);
-            this.cmbCsv.TabIndex = 3;
             // 
             // btnComboBoxFile
             // 
-            this.btnComboBoxFile.Location = new System.Drawing.Point(410, 12);
+            resources.ApplyResources(this.btnComboBoxFile, "btnComboBoxFile");
             this.btnComboBoxFile.Name = "btnComboBoxFile";
-            this.btnComboBoxFile.Size = new System.Drawing.Size(134, 23);
-            this.btnComboBoxFile.TabIndex = 4;
-            this.btnComboBoxFile.Text = "Select Combobox File";
             this.btnComboBoxFile.UseVisualStyleBackColor = true;
+            this.btnComboBoxFile.Click += new System.EventHandler(this.btnComboBoxFile_Click);
             // 
             // btnShowId
             // 
-            this.btnShowId.Location = new System.Drawing.Point(568, 11);
+            resources.ApplyResources(this.btnShowId, "btnShowId");
             this.btnShowId.Name = "btnShowId";
-            this.btnShowId.Size = new System.Drawing.Size(75, 23);
-            this.btnShowId.TabIndex = 5;
-            this.btnShowId.Text = "Show  ID";
             this.btnShowId.UseVisualStyleBackColor = true;
             this.btnShowId.Click += new System.EventHandler(this.btnShowId_Click);
             // 
             // openFileDialog2
             // 
             this.openFileDialog2.FileName = "openFileDialog2";
+            resources.ApplyResources(this.openFileDialog2, "openFileDialog2");
             // 
             // CsvReader
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(716, 447);
             this.Controls.Add(this.btnShowId);
             this.Controls.Add(this.btnComboBoxFile);
             this.Controls.Add(this.cmbCsv);
             this.Controls.Add(this.btnSaveCSV);
             this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.dgvDataCsv);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "CsvReader";
-            this.Text = "CSV Reader";
             ((System.ComponentModel.ISupportInitialize)(this.dgvDataCsv)).EndInit();
             this.ResumeLayout(false);
 

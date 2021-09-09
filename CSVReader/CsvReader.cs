@@ -17,15 +17,16 @@ namespace CSVReader
         string dgvFileName;
         string cmbFileName;
         DataTable dgvDT;
+
         public CsvReader()
         {
             InitializeComponent();
-            InitializeComboBox();
         }
 
         private void InitializeComboBox()
         {
-            if (openFileDialog2.ShowDialog() == DialogResult.OK) {
+            if (openFileDialog2.ShowDialog() == DialogResult.OK)
+            {
                 cmbFileName = openFileDialog2.FileName;
                 try
                 {
@@ -54,7 +55,8 @@ namespace CSVReader
                         dgvDT = csv.readCSV;
                         dgvDataCsv.DataSource = dgvDT;
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         throw new Exception(ex.Message);
                     }
                 }
@@ -68,48 +70,20 @@ namespace CSVReader
 
         private void btnSaveCSV_Click(object sender, EventArgs e)
         {
-            StreamWriter sw = new StreamWriter(dgvFileName, false);
-            //headers    
-            for (int i = 0; i < dgvDT.Columns.Count; i++)
-            {
-                sw.Write(dgvDT.Columns[i]);
-                if (i < dgvDT.Columns.Count - 1)
-                {
-                    sw.Write(",");
-                }
-            }
-            sw.Write(sw.NewLine);
-            foreach (DataRow dr in dgvDT.Rows)
-            {
-                for (int i = 0; i < dgvDataCsv.Columns.Count; i++)
-                {
-                    if (!Convert.IsDBNull(dr[i]))
-                    {
-                        string value = dr[i].ToString();
-                        if (value.Contains(','))
-                        {
-                            value = String.Format("\"{0}\"", value);
-                            sw.Write(value);
-                        }
-                        else
-                        {
-                            sw.Write(dr[i].ToString());
-                        }
-                    }
-                    if (i < dgvDataCsv.Columns.Count - 1)
-                    {
-                        sw.Write(",");
-                    }
-                }
-                sw.Write(sw.NewLine);
-            }
-            sw.Close();
+
+            WriteCSV writer = new WriteCSV(dgvDT, dgvFileName, dgvDataCsv);
+            writer.SaveCSV();
         }
 
         private void btnShowId_Click(object sender, EventArgs e)
         {
-            DataRowView selectedItem = (DataRowView) cmbCsv.SelectedItem;
+            DataRowView selectedItem = (DataRowView)cmbCsv.SelectedItem;
             MessageBox.Show(selectedItem.Row.ItemArray[0].ToString());
+        }
+
+        private void btnComboBoxFile_Click(object sender, EventArgs e)
+        {
+            InitializeComboBox();
         }
     }
 }
